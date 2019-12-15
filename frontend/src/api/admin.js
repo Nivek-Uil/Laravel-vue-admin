@@ -15,10 +15,16 @@ export function getInfo() {
   })
 }
 
-export function logout(data) {
+export function refreshToken() {
   return request({
-    url: '/admin/authorization',
-    method: 'delete',
-    data
+    url: '/admin/authorization/current',
+    method: 'put'
+  })
+}
+
+export function logout() {
+  return request({
+    url: '/admin/authorization/current',
+    method: 'delete'
   })
 }

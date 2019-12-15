@@ -36,7 +36,7 @@ class AdminsController extends Controller
 
 	public function destroy()
 	{
-		auth('api')->logout();
+		auth('admin')->logout();
 		return response(['success'],200);
 	}
 

@@ -62,6 +62,7 @@ const actions = {
 
   // user logout
   logout({ commit, state }) {
+    console.log(state)
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
@@ -74,7 +75,7 @@ const actions = {
     })
   },
 
-  // remove token
+  // reset token
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')

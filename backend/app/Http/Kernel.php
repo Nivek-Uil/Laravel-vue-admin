@@ -36,11 +36,13 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+			\App\Http\Middleware\EnableCrossRequest::class,
         ],
 
         'api' => [
         	// 添加请求头中间件，将报错信息格式化为json
 			\App\Http\Middleware\AcceptHeader::class,
+			// 开启跨域
 			\App\Http\Middleware\EnableCrossRequest::class,
             'throttle:60,1',
             'bindings',

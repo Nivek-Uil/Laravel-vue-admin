@@ -42,29 +42,29 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    console.log(response)
+    // console.log(response)
     // if the custom code is not 20000, it is judged as an error.
     if (response.status !== 200 && response.status !== 201) {
       Message({
-        message: res.message || '网络错误',
+        message: response.message || '网络错误',
         type: 'error',
         duration: 5 * 1000
       })
 
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
-      return Promise.reject(new Error(res.message || 'Error'))
+      // // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      // if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      //   // to re-login
+      //   MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+      //     confirmButtonText: 'Re-Login',
+      //     cancelButtonText: 'Cancel',
+      //     type: 'warning'
+      //   }).then(() => {
+      //     store.dispatch('user/resetToken').then(() => {
+      //       location.reload()
+      //     })
+      //   })
+      // }
+      return Promise.reject(new Error(response.message || 'Error'))
     } else {
       return res
     }
@@ -82,7 +82,7 @@ service.interceptors.response.use(
         message = '没有权限！'
         break
       default:
-        message = response.status + ' ' + response.data.message
+        message = process.env.NODE_ENV === 'development' ? 'statusCode:' + response.status + ' ' + response.data.message : response.data.message
         break
     }
     Message({

@@ -32,7 +32,7 @@ Route::namespace('Api')->name('api.')->group(function() {
 			// 当前登录管理员信息
 			Route::get('/user','AdminsController@me');
 			// 获取后台菜单列表
-			Route::get('/menu', 'MenusController@index')->name('menu.index');
+			Route::resource('menus', 'MenusController');
 		});
 
 	});

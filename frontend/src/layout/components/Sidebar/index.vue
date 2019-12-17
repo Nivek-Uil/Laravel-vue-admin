@@ -31,7 +31,9 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      // return this.$router.options.routes
+      // 获取动态生成的路由表
+      return this.$store.getters.permission_routes
     },
     activeMenu() {
       const route = this.$route

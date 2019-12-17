@@ -33,8 +33,15 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
+          // generate accessible routes map based on roles
+          const accessRoutes = await store.dispatch('permission/generateRoutes', ['super_admin'])
 
-          next()
+          console.log('accessRoutes', accessRoutes)
+
+          // 动态添加路由
+          router.addRoutes(accessRoutes)
+
+          next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

@@ -42,9 +42,9 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    // console.log(response)
+    console.log(response)
     // if the custom code is not 20000, it is judged as an error.
-    if (response.status !== 200) {
+    if (response.status !== 200 && response.status !== 201) {
       Message({
         message: res.message || '网络错误',
         type: 'error',
@@ -71,9 +71,22 @@ service.interceptors.response.use(
   },
   error => {
     console.log(error.response)
+    const response = error.response
+    let message = ''
     // console.log('err' + error) // for debug
+    switch (response.status) {
+      case 429:
+        message = '请求过于频繁，请稍后再试！'
+        break
+      case 403:
+        message = '没有权限！'
+        break
+      default:
+        message = response.status + ' ' + response.data.message
+        break
+    }
     Message({
-      message: '状态码:' + error.response.status + ' ' + error.response.data.message,
+      message: message,
       type: 'error',
       duration: 5 * 1000
     })

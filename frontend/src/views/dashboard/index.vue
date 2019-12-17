@@ -1,6 +1,9 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <el-card class="box-card">
+      <div class="dashboard-text">name: {{ name }}</div>
+    </el-card>
+
   </div>
 </template>
 
@@ -20,11 +23,15 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   &-container {
-    margin: 30px;
+    /*margin: 0px;*/
   }
   &-text {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.box-card{
+  margin: 10px;
+  min-height: 900px;
 }
 </style>

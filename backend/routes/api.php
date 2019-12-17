@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::namespace('Api')->name('api.')->group(function() {
 
+	// 图片验证码
+	Route::middleware('throttle:60,1')->get('captchas','CaptchasController@store')->name('captchas.store');
+
 	//后端接口
 	Route::prefix('admin')->name('admin.')->group(function(){
 		// 登录
@@ -35,6 +38,12 @@ Route::namespace('Api')->name('api.')->group(function() {
 	});
 
 	//前端接口
+
+
+	//回退路由
+	Route::fallback(function () {
+		return response()->json(['message' => '404 请检查访问地址或请求方式是否正确'])->setStatusCode(404);
+	});
 
 });
 

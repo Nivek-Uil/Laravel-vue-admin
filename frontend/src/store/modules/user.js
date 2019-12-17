@@ -1,4 +1,3 @@
-// import { login, logout, getInfo } from '@/api/user'
 import { login, logout, getInfo } from '@/api/admin'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
@@ -22,11 +21,11 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // admin login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, captcha_key, captcha_code } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, captcha_key: captcha_key, captcha_code: captcha_code }).then(response => {
         // console.log(response)
         const token = response.token_type + ' ' + response.access_token
         commit('SET_TOKEN', token)
@@ -38,7 +37,7 @@ const actions = {
     })
   },
 
-  // get user info
+  // get admin info
   getInfo({ commit, state }) {
     // console.log('getInfo',state.token)
     return new Promise((resolve, reject) => {
@@ -60,7 +59,7 @@ const actions = {
     })
   },
 
-  // user logout
+  // admin logout
   logout({ commit, state }) {
     console.log(state)
     return new Promise((resolve, reject) => {

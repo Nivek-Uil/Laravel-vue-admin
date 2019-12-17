@@ -40,12 +40,19 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
+      <el-form-item>
+        <div class="captcha-body">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input v-model="loginForm.captcha_code" placeholder="请输入验证码" />
+          <img alt="captcha" @click="getCaptcha" title="点击更换验证码" :src="loginForm.captcha_img">
+        </div>
+      </el-form-item>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <span style="margin-right:20px;">用户名: admin</span>
+        <span> 密码: admin</span>
       </div>
 
     </el-form>
@@ -54,6 +61,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { getCaptcha } from '@/api/captcha'
 
 export default {
   name: 'Login',
@@ -75,7 +83,10 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'admin'
+        password: 'admin',
+        captcha_key: '',
+        captcha_code: '',
+        captcha_img: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -94,7 +105,16 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.getCaptcha()
+  },
   methods: {
+    getCaptcha() {
+      getCaptcha().then(res => {
+        this.loginForm.captcha_img = res.captcha_image_content,
+        this.loginForm.captcha_key = res.captcha_key
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -113,6 +133,7 @@ export default {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
+            this.getCaptcha()
             this.loading = false
           })
         } else {
@@ -142,7 +163,7 @@ $cursor: #fff;
 /* reset element-ui css */
 .login-container {
   .el-input {
-    display: inline-block;
+    /*display: inline-block;*/
     height: 47px;
     width: 85%;
 
@@ -232,6 +253,22 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+  .captcha {
+    &-body{
+      display: flex;
+      input{
+        flex: 3;
+      }
+     img{
+        border-radius: 0 5px 5px 0;
+        background: #2b2f3a;
+        width: 150px;
+        height: auto;
+        flex: 1;
+      }
+    }
+
   }
 }
 </style>

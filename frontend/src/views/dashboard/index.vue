@@ -1,37 +1,31 @@
 <template>
   <div class="dashboard-container">
-    <el-card class="box-card">
-      <div class="dashboard-text">name: {{ name }}</div>
-    </el-card>
-
+    <component :is="currentRole" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import adminDashboard from './admin'
+import editorDashboard from './editor'
 
 export default {
   name: 'Dashboard',
+  components: { adminDashboard, editorDashboard },
+  data() {
+    return {
+      currentRole: 'adminDashboard'
+    }
+  },
   computed: {
     ...mapGetters([
-      'name'
+      'roles'
     ])
+  },
+  created() {
+    if (!this.roles.includes('super_admin')) {
+      this.currentRole = 'editorDashboard'
+    }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    /*margin: 0px;*/
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
-.box-card{
-  margin: 10px;
-  min-height: 900px;
-}
-</style>

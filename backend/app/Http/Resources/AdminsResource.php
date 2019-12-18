@@ -18,6 +18,8 @@ class AdminsResource extends JsonResource
     		'name' => $this->account,
 			'avatar' => $this->avatar,
 			'status' => $this->status,
+			'roles' => ['super_admin'],
+			'introducation' => 'super_admin'
 		];
 //		return parent::toArray($request);
     }
